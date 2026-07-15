@@ -1,0 +1,88 @@
+<div class="historial-container">
+  
+  <div class="header">
+    <div class="header-icon">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="10"></circle>
+        <polyline points="12 6 12 12 16 14"></polyline>
+      </svg>
+    </div>
+    <h2 class="title">Historial de Sesiones</h2>
+  </div>
+
+  <div class="loading-state" *ngIf="cargando">
+    <div class="spinner"></div>
+    <span>Cargando historial...</span>
+  </div>
+
+  <div class="sesiones-list" *ngIf="!cargando">
+    
+    <div class="empty-state" *ngIf="sesiones.length === 0">
+      <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="10"></circle>
+        <line x1="12" y1="8" x2="12" y2="12"></line>
+        <line x1="12" y1="16" x2="12.01" y2="16"></line>
+      </svg>
+      <p>No hay sesiones en tu historial.</p>
+    </div>
+
+    <div class="sesion-card" *ngFor="let sesion of sesiones">
+      <div class="sesion-info">
+        <h3 class="sesion-title">{{ sesion.titulo }}</h3>
+        <p class="sesion-desc">{{ sesion.descripcion }}</p>
+        <div class="sesion-meta">
+          <span class="sesion-fecha">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+              <line x1="16" y1="2" x2="16" y2="6"></line>
+              <line x1="8" y1="2" x2="8" y2="6"></line>
+              <line x1="3" y1="10" x2="21" y2="10"></line>
+            </svg>
+            {{ sesion.fechaHora | date:'medium' }}
+          </span>
+        </div>
+      </div>
+
+      <div class="sesion-actions" *ngIf="esAlumno && sesionIdCalificando !== sesion.id">
+        <button class="btn-calificar" (click)="abrirFormularioCalificar(sesion.id)">
+          Calificar
+        </button>
+      </div>
+
+      <div class="calificacion-form" *ngIf="sesionIdCalificando === sesion.id">
+        <h4>Calificar Sesión</h4>
+        
+        <div class="form-group">
+          <label>Puntuación (1 al 5)</label>
+          <div class="stars-select">
+            <select [(ngModel)]="calificacion" [disabled]="enviandoEvaluacion">
+              <option [ngValue]="1">1 Estrella</option>
+              <option [ngValue]="2">2 Estrellas</option>
+              <option [ngValue]="3">3 Estrellas</option>
+              <option [ngValue]="4">4 Estrellas</option>
+              <option [ngValue]="5">5 Estrellas</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Comentario</label>
+          <textarea 
+            rows="3" 
+            placeholder="¿Qué te pareció la sesión?" 
+            [(ngModel)]="comentario" 
+            [disabled]="enviandoEvaluacion">
+          </textarea>
+        </div>
+
+        <div class="form-actions">
+          <button class="btn-cancelar" (click)="cancelarCalificacion()" [disabled]="enviandoEvaluacion">Cancelar</button>
+          <button class="btn-enviar" (click)="enviarCalificacion()" [disabled]="enviandoEvaluacion">
+            <span *ngIf="!enviandoEvaluacion">Enviar Calificación</span>
+            <span *ngIf="enviandoEvaluacion">Enviando...</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

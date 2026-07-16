@@ -1,7 +1,6 @@
 import { Routes } from '@angular/router';
 import { Landing } from './pages/landing/landing';
 import { Layout } from './pages/layout/layout';
-import { Home } from './pages/home/home';
 import { MiAgenda } from './pages/mi-agenda/mi-agenda';
 import { Catalogo } from './pages/catalogo/catalogo';
 import { Admin } from './pages/admin/admin';
@@ -30,15 +29,18 @@ export const routes: Routes = [
     component: Layout,
     canActivateChild: [authGuard],
     children: [
-      { path: 'home', component: Home },
-      // EP-03/04: Mis Tutorías (Tutor: HU-09/10/11/12 + Alumno: HU-15/16)
-      { path: 'mis-tutorias', component: MiAgenda },
+      // Tu redirección inteligente sin Home
+      { path: '', redirectTo: 'catalogo', pathMatch: 'full' },
+      
+      // EP-03/04: Agendas
+      { path: 'mi-agenda', component: MiAgenda },
+      { path: 'mis-tutorias', component: MiAgenda }, // Mantenemos esta por si los alumnos la usan
+      
       // EP-04: Catálogo de tutorías (HU-13/14)
       { path: 'catalogo', component: Catalogo },
       { path: 'admin', component: Admin },
       { path: 'avisos', component: AvisosBoard },
       { path: 'sesion/:id/foro', component: SesionForo },
-      // Aquí agregarán las rutas de los demás compañeros (admin, etc.)
     ],
   },
   {

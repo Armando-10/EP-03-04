@@ -6,11 +6,12 @@ import { InscripcionService, AgendaAlumno } from '../../core/services/inscripcio
 import { ToastService } from '../../core/services/toast/toast';
 import { AuthService } from '../../core/services/auth/auth';
 import { Toast } from '../../shared/components/toast/toast';
+import { GestorRecursosComponent } from '../../shared/components/gestor-recursos/gestor-recursos.component';
 
 @Component({
   selector: 'app-mi-agenda',
   standalone: true,
-  imports: [CommonModule, FormsModule, Toast],
+  imports: [CommonModule, FormsModule, Toast, GestorRecursosComponent],
   templateUrl: './mi-agenda.html',
   styleUrl: './mi-agenda.css',
 })
@@ -36,6 +37,12 @@ export class MiAgenda implements OnInit {
   sesionEditandoId: string | null = null;
   fechaBloqueada = false;
   formulario: SesionRequest = this.formularioVacio();
+
+  // -----------------------------------------------------------------------
+  // Estado del modal de Recursos
+  // -----------------------------------------------------------------------
+  mostrarRecursos = false;
+  sesionRecursosId: string | null = null;
 
   constructor(
     private sesionService: SesionService,
@@ -110,6 +117,20 @@ export class MiAgenda implements OnInit {
 
   cerrarFormulario(): void {
     this.mostrarFormulario = false;
+  }
+
+  // =========================================================================
+  // SECCIÓN RECURSOS — Épica 7
+  // =========================================================================
+
+  abrirRecursos(sesionId: string): void {
+    this.sesionRecursosId = sesionId;
+    this.mostrarRecursos = true;
+  }
+
+  cerrarRecursos(): void {
+    this.mostrarRecursos = false;
+    this.sesionRecursosId = null;
   }
 
   // =========================================================================

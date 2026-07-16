@@ -121,6 +121,15 @@
         </div>
 
         <div class="card-acciones">
+          <button class="btn-editar" (click)="abrirRecursos(sesion.id)"
+            id="btn-recursos-tutor-{{ sesion.id }}">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+              <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+            </svg>
+            Recursos
+          </button>
           <button class="btn-editar" (click)="abrirFormularioEditar(sesion)"
             id="btn-editar-{{ sesion.id }}">
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none"
@@ -223,6 +232,15 @@
         </div>
 
         <div class="card-acciones">
+          <button class="btn-editar" (click)="abrirRecursos(sesion.sesionId)"
+            id="btn-recursos-alumno-{{ sesion.sesionId }}" style="background-color: var(--secondary-color); color: white; border: none;">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+              <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+            </svg>
+            Materiales
+          </button>
           <button class="btn-cancelar-inscripcion"
             (click)="confirmarCancelacionInscripcion(sesion)"
             id="btn-cancelar-inscripcion-{{ sesion.inscripcionId }}">
@@ -300,4 +318,24 @@
       </button>
     </div>
   </form>
+</div>
+
+<!-- ===== MODAL RECURSOS (Épica 7) ===== -->
+<div class="overlay" *ngIf="mostrarRecursos" (click)="cerrarRecursos()"></div>
+
+<div class="formulario-panel" [class.visible]="mostrarRecursos">
+  <div class="formulario-header" style="background-color: var(--secondary-color); color: white;">
+    <h2 style="color: white;">Materiales de la Tutoría</h2>
+    <button class="btn-cerrar-panel" (click)="cerrarRecursos()" id="btn-cerrar-recursos" style="color: white;">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="18" y1="6" x2="6" y2="18"></line>
+        <line x1="6" y1="6" x2="18" y2="18"></line>
+      </svg>
+    </button>
+  </div>
+  
+  <div style="padding: 0; max-height: 80vh; overflow-y: auto;">
+    <app-gestor-recursos *ngIf="sesionRecursosId" [sesionId]="sesionRecursosId"></app-gestor-recursos>
+  </div>
 </div>

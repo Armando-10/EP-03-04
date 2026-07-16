@@ -43,7 +43,7 @@
         </div>
       </div>
 
-      <div class="sesion-actions" *ngIf="esAlumno && sesionIdCalificando !== sesion.id">
+      <div class="sesion-actions" *ngIf="esAlumno && sesionIdCalificando !== sesion.id && !sesionesCalificadas.has(sesion.id)">
         <button class="btn-calificar" (click)="abrirFormularioCalificar(sesion.id)">
           Calificar
         </button>

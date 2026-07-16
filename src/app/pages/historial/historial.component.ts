@@ -24,6 +24,7 @@ export class HistorialComponent implements OnInit {
   calificacion: number = 5;
   comentario: string = '';
   enviandoEvaluacion = false;
+  sesionesCalificadas: Set<string> = new Set();
 
   constructor(
     private historialService: HistorialService,
@@ -83,6 +84,7 @@ export class HistorialComponent implements OnInit {
       next: () => {
         this.toastService.mostrar('Calificación enviada exitosamente.', 'success');
         this.enviandoEvaluacion = false;
+        this.sesionesCalificadas.add(this.sesionIdCalificando!);
         this.sesionIdCalificando = null;
       },
       error: () => {

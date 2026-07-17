@@ -32,6 +32,7 @@ export class Layout implements OnInit, OnDestroy {
   // Variables reactivas para el HTML
   notificaciones$: Observable<Notificacion[]>;
   sinLeer$: Observable<number>;
+  marcandoComoLeidaId$: Observable<string | null>;
 
   constructor(
     public authService: AuthService,
@@ -40,6 +41,7 @@ export class Layout implements OnInit, OnDestroy {
     private toastService: ToastService,
   ) {
     this.notificaciones$ = this.notificacionService.notificaciones$;
+    this.marcandoComoLeidaId$ = this.notificacionService.marcandoComoLeidaId$;
     // Calculamos cuántas notificaciones no han sido leídas
     this.sinLeer$ = this.notificaciones$.pipe(
       map((notificaciones) => notificaciones.filter((n) => !n.leida).length),

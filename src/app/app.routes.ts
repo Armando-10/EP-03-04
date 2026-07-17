@@ -1,7 +1,11 @@
 import { Routes } from '@angular/router';
 import { Landing } from './pages/landing/landing';
 import { Layout } from './pages/layout/layout';
-import { Home } from './pages/home/home';
+import { MiAgenda } from './pages/mi-agenda/mi-agenda';
+import { Catalogo } from './pages/catalogo/catalogo';
+import { Admin } from './pages/admin/admin';
+import { AvisosBoard } from './pages/avisos-board/avisos-board';
+import { SesionForo } from './pages/sesion-foro/sesion-foro';
 import { authGuard } from './core/guards/auth-guard';
 import { publicGuard } from './core/guards/auth-guard';
 import { roleGuard } from './core/guards/auth-guard';
@@ -22,7 +26,7 @@ export const routes: Routes = [
     component: Register,
   },
   {
-    // Rutas privadas
+    // Rutas privadas (protegidas por authGuard, con Navbar del Layout)
     path: 'app',
     component: Layout,
     canActivateChild: [authGuard],
@@ -31,6 +35,22 @@ export const routes: Routes = [
       // HU-06: Panel de Administración, solo visible para rol ADMIN
       { path: 'admin', component: Admin, canActivate: [roleGuard('ROLE_ADMIN')] },
       // Aquí agregaremos luego las rutas de tus compañeros (catalogo, agenda, etc.)
+      // Redirección inteligente
+      { path: '', redirectTo: 'catalogo', pathMatch: 'full' },
+      
+      // EP-03/04: Agendas (Mis Tutorías activas)
+      { path: 'mi-agenda', component: MiAgenda },
+      
+      // EP-04: Catálogo de tutorías
+      { path: 'catalogo', component: Catalogo },
+      
+      // EP-05/07: Historial y Calificaciones
+      { path: 'historial', loadComponent: () => import('./pages/historial/historial.component').then(m => m.HistorialComponent) },
+      
+      // EP-06: Avisos, Foro y Admin
+      { path: 'admin', component: Admin },
+      { path: 'avisos', component: AvisosBoard },
+      { path: 'sesion/:id/foro', component: SesionForo },
     ],
   },
   {

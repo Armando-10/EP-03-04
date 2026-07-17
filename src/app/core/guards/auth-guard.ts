@@ -18,13 +18,13 @@ export const authGuard: CanActivateChildFn = async (childRoute, state) => {
 
 export const publicGuard: CanActivateFn = async (route, state) => {
   const authService = inject(AuthService);
-  const router = inject(Router);
   const isAuthenticated = await authService.waitForAuthReady();
 
   if (isAuthenticated) {
-    router.navigate(['/app/home']);
+    authService.redirigirSegunRol();
     return false;
   }
+
   return true;
 };
 

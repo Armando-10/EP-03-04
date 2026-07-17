@@ -21,13 +21,13 @@ export class AuthService {
       .loadDiscoveryDocumentAndTryLogin()
       .then((loggedIn) => {
         if (loggedIn) {
-          this.router.navigateByUrl('/app/home');
+          this.redirigirSegunRol();
         }
         return loggedIn;
       });
   }
 
-  private get decodedToken(): any {
+  public get decodedToken(): any {
     const token = this.oauthService.getAccessToken();
     if (!token) return null;
     try {
@@ -73,6 +73,17 @@ export class AuthService {
     return this.isLoggedIn;
   }
 
+  // Redirección inteligente basada en el rol del JWT
+  public redirigirSegunRol(): void {
+    if (this.hasRole('ROLE_ADMIN')) {
+      this.router.navigate(['/app/admin']);
+    } else if (this.hasRole('ROLE_TUTOR')) {
+      this.router.navigate(['/app/mi-agenda']);
+    } else {
+      this.router.navigate(['/app/catalogo']);
+    }
+  }
+
   // Métodos para obtener información del usuario
 
   public hasRole(rolBuscado: string): boolean {
@@ -88,7 +99,12 @@ export class AuthService {
 
   public get userEmail(): string {
     const payload = this.decodedToken;
-    return payload?.sub || '';
+    return payload?.email || '';
+  }
+
+  public get userNombre(): string {
+    const payload = this.decodedToken;
+    return payload?.nombre || '';
   }
 
   // HU-08: pide un access token nuevo usando el refresh_token guardado,
